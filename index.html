@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I'm Very Sorry 😭</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #ff6b6b, #feca57, #ff9ff3, #48dbfb);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            animation: float 3s ease-in-out infinite;
+            max-width: 90%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .sorry-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #d63031;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .no-btn {
+            background: linear-gradient(45deg, #e17055, #d63031);
+            color: white;
+        }
+
+        .no-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(214, 48, 49, 0.4);
+        }
+
+        .yes-btn {
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            color: white;
+        }
+
+        .yes-btn:hover:not(.growing) {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 184, 148, 0.4);
+        }
+
+        .growing {
+            animation: grow 0.5s ease forwards;
+            z-index: 10;
+        }
+
+        @keyframes grow {
+            0% { transform: scale(1); }
+            100% { transform: scale(8); }
+        }
+
+        .thank-you {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            font-weight: bold;
+            color: #00b894;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            opacity: 0;
+            animation: thankYouAppear 1s ease forwards, floatThankYou 3s ease-in-out 1s infinite;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        @keyframes thankYouAppear {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        @keyframes floatThankYou {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+            50% { transform: translate(-50%, -50%) translateY(-20px); }
+        }
+
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            color: #ff69b4;
+            animation: heartFloat 3s ease-out infinite;
+        }
+
+        @keyframes heartFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sorry-text">
+            I'm veryy veryy veryy sorry 😭<br>
+            <span style="font-size: 1.8rem; color: #e17055;">Please maaf karde kal raat ke liye 🙏</span>
+        </div>
+        <div class="buttons-container">
+            <button class="btn no-btn" id="noBtn">NO ❌</button>
+            <button class="btn yes-btn" id="yesBtn">YES ✅</button>
+        </div>
+    </div>
+
+    <div class="thank-you hidden" id="thankYou">
+        Thank You! 😘💋
+    </div>
+
+    <div class="hearts" id="hearts"></div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const thankYou = document.getElementById('thankYou');
+        const heartsContainer = document.getElementById('hearts');
+        let growthCount = 0;
+        const maxGrowth = 8;
+
+        noBtn.addEventListener('click', function() {
+            growthCount++;
+            yesBtn.style.transform = `scale(${Math.min(growthCount, maxGrowth)})`;
+            yesBtn.classList.add('growing');
+            
+            // Reset after animation
+            setTimeout(() => {
+                yesBtn.classList.remove('growing');
+                if (growthCount < maxGrowth) {
+                    yesBtn.style.transform = 'scale(1)';
+                }
+            }, 500);
+        });
+
+        yesBtn.addEventListener('click', function() {
+            // Hide buttons and text
+            document.querySelector('.container').classList.add('hidden');
+            
+            // Show thank you message
+            thankYou.classList.remove('hidden');
+            
+            // Create floating hearts
+            createHearts();
+        });
+
+        function createHearts() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.innerHTML = '💖';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.animationDelay = Math.random() * 2 + 's';
+                    heartsContainer.appendChild(heart);
+                    
+                    // Remove heart after animation
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 3000);
+                }, i * 200);
+            }
+        }
+    </script>
+</body>
+</html>
